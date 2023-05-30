@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/BetterMJ/repeatr/issues"
   },
-  "homepage": "https://github.com/BetterMJ/repeatr#readme"
+  "homepage": "https://github.com/BetterMJ/repeatr#readme",
+  "dependencies": {
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.2.0"
+  }
 }

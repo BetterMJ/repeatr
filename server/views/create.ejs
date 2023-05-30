@@ -4,9 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Repeatr | Create</title>
 </head>
 <body>
-    
+    <nav>
+        <h3>Repeatr</h3>
+        <a href="/">Home</a>
+        <a href="/play">Play</a>
+        <a href="/create">create</a>
+    </nav>
+    <div id="formContainer">
+        <form action="" class="questionForm">
+          <label for="question">Your Question:</label>
+          <input type="text" class="question" placeholder="Is this a question?">
+      
+          <label for="answer">Your Answer:</label>
+          <input type="text" class="answer" placeholder="An example answer would be yes.">
+      
+          <label for="correctCheck">Is it correct?</label>
+          <input type="checkbox" class="correctCheck" value="Is it correct?">
+        </form>
+      </div>
+      <button onclick="addQuestion()">Add another question</button>
+      
+      <script>
+        function addQuestion() {
+          var formContainer = document.getElementById('formContainer');
+          var formTemplate = document.querySelector('.questionForm');
+          
+          // Clone the form template
+          var newForm = formTemplate.cloneNode(true);
+          
+          // Append the new form to the container
+          formContainer.appendChild(newForm);
+        }
+      </script>
+    </div>
 </body>
 </html>
