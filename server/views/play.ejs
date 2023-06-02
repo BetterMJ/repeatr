@@ -1,65 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Repeatr | Play</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <h3>Repeatr</h3>
-        <a href="/">Home</a>
-        <a href="/play">Play</a>
-        <a href="/create">create</a>
+      <h3>Repeatr</h3>
+      <a href="/">Home</a>
+      <a href="/play">Play</a>
+      <a href="/create">create</a>
     </nav>
     <h1>Choose a deck</h1>
+
     <div id="decks">
-            <% var cardGroups = Array.from(new Set(cards.map(card => card.c))); %>
-            <% cardGroups.forEach(function(group) { %>
-              <div>
-                <button class="card-group-button" onclick="toggleCardContents(this)">
-                  <h2>Card Group: <%= group %></h2>
-                </button>
-                <div class="card-contents">
-                  <% cards.filter(function(card) { return card.c === group; }).forEach(function(card, index) { %>
-                    <div class="card-item" style="display: none;">
-                      <h2>Question:</h2>
-                      <p><%= card.q %></p>
-                
-                      <h2>Answers:</h2>
-                      <ul>
-                        <% card.a.forEach(function(answer) { %>
-                          <li><%= answer %></li>
-                        <% }) %>
-                      </ul>
-                
-                      <h2>Correct Answers:</h2>
-                      <ul>
-                        <% card.ca.forEach(function(correct) { %>
-                          <li><%= correct %></li>
-                        <% }) %>
-                      </ul>
-                    </div>
-                  <% }) %>
-                </div>
-              </div>
-              <hr>
-            <% }) %>
-          
-          <script>
-            function toggleCardContents(button) {
-              var cardContents = button.nextElementSibling;
-              var cardItems = cardContents.getElementsByClassName('card-item');
-          
-              for (var i = 0; i < cardItems.length; i++) {
-                var cardItem = cardItems[i];
-                cardItem.style.display = cardItem.style.display === 'block' ? 'none' : 'block';
-              }
-            }
-          </script>
-          
+      <% var cardGroups = Array.from(new Set(cards.map(card => card.c))); %> <%
+      cardGroups.forEach(function(group) { %>
+      <div>
+        <button class="card-group-button" onclick="toggleCardContents(this)">
+          <h2>Card Group: <%= group %></h2>
+        </button>
+        <div class="card-contents">
+          <% cards.filter(function(card) { return card.c === group;
+          }).forEach(function(card, index) { %>
+          <div class="card-item" style="display: none">
+            <h2>Question:</h2>
+            <p><%= card.q %></p>
+            <form class="answer-form">
+              <h2>Answers:</h2>
+              <ul>
+                <% card.a.forEach(function(answer, answerIndex) { %>
+                <li>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="answer_<%= index %>"
+                      value="<%= answer %>"
+                    />
+                    <%= answer %>
+                  </label>
+                </li>
+                <% }) %>
+              </ul>
+              <button
+                type="button"
+                onclick="checkAnswer(this, <%= JSON.stringify(card.ca) %>, <%= index %>)"
+              >
+                Submit
+              </button>
+              <p class="result" style="display: none"></p>
+            </form>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <hr />
+      <% }) %>
     </div>
-</body>
+
+    <script>
+      function toggleCardContents(button) {
+        var cardContents = button.nextElementSibling;
+        var cardItems = cardContents.getElementsByClassName("card-item");
+
+        for (var i = 0; i < cardItems.length; i++) {
+          var cardItem = cardItems[i];
+          cardItem.style.display =
+            cardItem.style.display === "block" ? "none" : "block";
+        }
+      }
+
+      function checkAnswer(button, cardCa, cardIndex) {
+        var form = button.parentNode;
+        var answers = form.querySelectorAll('input[type="checkbox"]');
+        var selectedAnswers = form.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        );
+        var resultElement = form.querySelector(".result");
+        var selectedValues = Array.from(selectedAnswers, function (input) {
+          return input.value;
+        });
+        console.log("Selected Vals:", selectedValues);
+        var answersArr = Array.from(answers, function (input) {
+          return input.value;
+        });
+        console.log("answers:", answersArr);
+
+        let corrCnt = 0;
+        let corrAnsCnt = 0;
+        falseAnsCnt = 0;
+        let corrIndices = [];
+        for (let i = 0; i < cardCa.length; i++) {
+          if (cardCa[i]) {
+            corrIndices.push(i);
+            corrCnt++;
+          }
+        }
+        console.log("corrIndices:", corrIndices)
+
+        for (var j = 0; j < selectedValues.length; j++) {
+          var selectedIndex = answersArr.indexOf(selectedValues[j]);
+          if (corrIndices.includes(selectedIndex)) {
+            corrAnsCnt++;
+          }
+          else{
+            falseAnsCnt++;
+          }
+        }
+        console.log("falseCnt:", falseAnsCnt)
+        console.log("corrAnsCnt:", corrAnsCnt)
+        console.log("corrCnt:", corrCnt)
+        var isCorrect = corrCnt === corrAnsCnt && falseAnsCnt == 0;
+
+        resultElement.textContent = isCorrect ? "Correct!" : "Wrong!";
+        resultElement.style.display = "block";
+      }
+    </script>
+  </body>
 </html>

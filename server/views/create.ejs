@@ -1,45 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Repeatr | Create</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <h3>Repeatr</h3>
-        <a href="/">Home</a>
-        <a href="/play">Play</a>
-        <a href="/create">create</a>
+      <h3>Repeatr</h3>
+      <a href="/">Home</a>
+      <a href="/play">Play</a>
+      <a href="/create">create</a>
     </nav>
+    <button class="formBtn" onclick="addQuestion()">Add another answer</button>
+    <button class="formBtn formSubmit" onclick="submitQuestion()">
+      Submit
+    </button>
+
     <div id="formContainer">
-        <form action="" class="questionForm">
-          <label for="question">Your Question:</label>
-          <input type="text" class="question" placeholder="Is this a question?">
-      
+      <form action="" class="questionForm">
+        <label for="question" class="questionLabel">Your Question:</label>
+        <input
+          required
+          type="text"
+          class="question"
+          placeholder="Is this a question?"
+        />
+
+        <label for="group" class="groupLabel">Grouping name:</label>
+        <input
+          required
+          type="text"
+          class="group"
+          placeholder="For example Math"
+        />
+
+        <div class="answerDiv">
           <label for="answer">Your Answer:</label>
-          <input type="text" class="answer" placeholder="An example answer would be yes.">
-      
+          <input
+            required
+            type="text"
+            class="answer"
+            placeholder="An example answer would be yes."
+          />
           <label for="correctCheck">Is it correct?</label>
-          <input type="checkbox" class="correctCheck" value="Is it correct?">
-        </form>
-      </div>
-      <button onclick="addQuestion()">Add another question</button>
-      
+          <input type="checkbox" class="correctCheck" value="Is it correct?" />
+        </div>
+      </form>
+
       <script>
         function addQuestion() {
-          var formContainer = document.getElementById('formContainer');
-          var formTemplate = document.querySelector('.questionForm');
-          
-          // Clone the form template
+          var formContainer = document.getElementById("formContainer");
+          var formTemplate = document.querySelector(".questionForm");
+
           var newForm = formTemplate.cloneNode(true);
-          
-          // Append the new form to the container
+
+          var questionInput = newForm.querySelector(".question");
+          var questionLabel = newForm.querySelector(".questionLabel");
+          var questionGroup = newForm.querySelector(".group");
+          var questionGroupLabel = newForm.querySelector(".groupLabel");
+          questionInput.parentNode.removeChild(questionInput);
+          questionLabel.parentNode.removeChild(questionLabel);
+          questionGroup.parentNode.removeChild(questionGroup);
+          questionGroupLabel.parentNode.removeChild(questionGroupLabel);
+
           formContainer.appendChild(newForm);
+        }
+
+        function submitQuestion() {
+          var questionInputs = document.querySelectorAll(".question");
+          var answerInputs = document.querySelectorAll(".answer");
+          var isValid = true;
+
+          questionInputs.forEach(function (input) {
+            if (input.value == "") {
+              isValid = false;
+            }
+          });
+
+          answerInputs.forEach(function (input) {
+            if (input.value == "") {
+              isValid = false;
+            }
+          });
+
+          if (isValid) {
+            let question = document.getElementsByClassName("question")[0].value;
+            let answersInputs = document.getElementsByClassName("answer");
+            let answers = [];
+
+            for (let i = 0; i < answerInputs.length; i++)
+              answers.push(answerInputs[i].value);
+
+            let isCorrectInputs =
+              document.getElementsByClassName("correctCheck");
+            let isCorrect = [];
+
+            for (let i = 0; i < isCorrectInputs.length; i++)
+              isCorrect.push(isCorrectInputs[i].checked);
+
+            let group = document.getElementsByClassName("group")[0].value;
+
+            const questionData = {
+              question: question,
+              ans: answers,
+              correctAns: isCorrect,
+              group: group,
+            };
+
+            fetch("/submit-question", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(questionData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Question submitted successfully");
+                } else {
+                  console.error(
+                    "Error submitting question:",
+                    response.statusText
+                  );
+                }
+              })
+              .catch((error) => {
+                console.error("Error submitting question:", error);
+              });
+
+            alert("Form submitted successfully!");
+          } else {
+            alert("Please fill in all question and answer fields.");
+          }
         }
       </script>
     </div>
-</body>
+  </body>
 </html>

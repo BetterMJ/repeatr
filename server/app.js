@@ -38,10 +38,10 @@ mongoose
   });
 
 const schema = new mongoose.Schema({
-  c: String,
   q: String,
   a: [String],
   ca: [Boolean],
+  c: String,
 });
 
 const Card = mongoose.model("Card", schema);
@@ -73,6 +73,26 @@ app.get("/play", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+app.post("/submit-question", async (req, res) => {
+  const { question, ans, correctAns, group } = req.body;
+try{
+  const newQuestion = new Card({
+    q: question,
+    a: ans,
+    ca: correctAns,
+    c: group,
+  });
+// res.status codes https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses
+  await newQuestion.save();
+  res.status(200).json({ message: 'Question saved successfully' });
+  console.log("Sent a question!")
+  }catch (error) {
+    console.error('Error saving question:', error);
+    res.status(500).json({ error: 'Failed to save question' });
+    console.log("FAILED to send a question!")
+  }
+})
 
 app.use((req, res) => {
   res.status(404).render("404.ejs");

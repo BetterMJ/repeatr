@@ -1,24 +1,37 @@
 :root {
-    --main: #0f0f0f;
-    --foreground: #eeeeee;
-    --bg-color-bright: #bbe1fa;
-    --bg-color-accent: #3282b8;
-    --bg-color-main: #0f4c75;
-    --bg-color-dark: #1b262c;
-    --color-shadow: rgba(40, 40, 40, 0.5);
+  --main: #0f0f0f;
+  --foreground: #eeeeee;
+  --color-bright: #6cb3e2;
+  --color-accent: #3282b8;
+  --color-main: #0f4c75;
+  --color-dark: #1b262c;
+  --color-shadow: rgba(40, 40, 40, 0.5);
 }
 
 body {
-    background-color: var(--main);
-    color: var(--foreground);
-    min-height: 100vh;
-    margin: 0;
+  background-color: var(--main);
+  color: var(--foreground);
+  min-height: 100vh;
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 10vh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-accent);
 }
 
 .btn,
 .btn:visited,
 .btn:link {
-  color: var(--bg-color-bright);
+  color: var(--color-bright);
   padding: 24px;
   width: 5rem;
   display: inline-block;
@@ -48,14 +61,71 @@ body {
   transform: translateY(3px);
 }
 
-#index, #error404 {
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+#index,
+#error404 {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 10vh);
 }
 
-.card-item{
+.card-item {
   display: none;
+}
+.formBtn {
+  padding: 16px;
+  margin: 10px;
+  background-color: var(--color-accent);
+  color: var(--foreground);
+  border: none;
+  transition: all 0.2s ease-in;
+}
+
+.formBtn:hover {
+  background-color: var(--color-bright);
+  transform: translateY(-5px);
+}
+
+.formSubmit {
+  background-color: var(--color-main) !important;
+}
+
+.formBtn:hover {
+  background-color: var(--color-accent) !important;;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.questionForm {
+  display: flex;
+  flex-direction: column;
+  margin: 1vh 5vw;
+}
+
+.questionForm > label,
+.questionForm > div > label {
+  color: var(--foreground);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.questionForm > input,
+.questionForm > div > input {
+  background-color: var(--main);
+  color: var(--foreground);
+  padding: 16px;
+  overflow-y: scroll;
+  width: 100%;
+  margin: 16px;
+}
+
+.answerDiv {
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
 }
