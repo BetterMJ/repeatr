@@ -17,6 +17,7 @@
     <h1 class="pageTitle">Choose a deck</h1>
 
     <div id="decks">
+      <!-- https://stackoverflow.com/questions/71778653/how-to-get-new-set-from-array-of-arrays-by-using-array-map-function -->
       <% var cardGroups = Array.from(new Set(cards.map(card => card.c))); %> <%
       cardGroups.forEach(function(group) { %>
       <div>
