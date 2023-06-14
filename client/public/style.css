@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: var(--main);
+  background-color: var(--color-dark);
   color: var(--foreground);
   min-height: 100vh;
   margin: 0;
@@ -28,12 +28,16 @@ a {
   color: var(--color-accent);
 }
 
+li {
+  list-style-type: none;
+}
+
 .btn,
 .btn:visited,
 .btn:link {
   color: var(--color-bright);
   padding: 24px;
-  width: 5rem;
+  min-width: 5rem;
   display: inline-block;
   cursor: pointer;
   border: none;
@@ -120,7 +124,6 @@ a {
   color: var(--foreground);
   padding: 16px;
   overflow-y: scroll;
-  width: 100%;
   margin: 16px;
 }
 
@@ -128,4 +131,38 @@ a {
   display: flex;
   margin: 0 auto;
   width: 100%;
+}
+
+/*
+ https://kulturbanause.de/blog/css-grid-auto-fill-responsive-layouts-ohne-media-queries/
+ */
+#decks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  text-align: center;
+  padding: 2vh 8vw;
+  gap: 20px;
+}
+
+.cardGroupButton {
+  border: var(--color-main) 3px solid;
+  color: var(--foreground);
+  background-color: transparent;
+  border-radius: 10px;
+  transition: all .3s ease;
+  width: 200px;
+  aspect-ratio: 1 / 1;
+}
+
+.cardGroupButton:hover {
+  border: var(--color-accent) 3px solid;
+  color: var(--color-accent);
+}
+
+.card-item {
+  text-align: left;
+}
+
+.pageTitle {
+  padding: 50px;
 }

@@ -14,13 +14,13 @@
       <a href="/play">Play</a>
       <a href="/create">create</a>
     </nav>
-    <h1>Choose a deck</h1>
+    <h1 class="pageTitle">Choose a deck</h1>
 
     <div id="decks">
       <% var cardGroups = Array.from(new Set(cards.map(card => card.c))); %> <%
       cardGroups.forEach(function(group) { %>
       <div>
-        <button class="card-group-button" onclick="toggleCardContents(this)">
+        <button class="cardGroupButton" onclick="toggleCardContents(this)">
           <h2>Card Group: <%= group %></h2>
         </button>
         <div class="card-contents">
@@ -45,19 +45,19 @@
                 </li>
                 <% }) %>
               </ul>
+              <p class="result" style="display: none"></p>
               <button
+              class="btn"
                 type="button"
                 onclick="checkAnswer(this, <%= JSON.stringify(card.ca) %>, <%= index %>)"
               >
                 Submit
               </button>
-              <p class="result" style="display: none"></p>
             </form>
           </div>
           <% }) %>
         </div>
       </div>
-      <hr />
       <% }) %>
     </div>
 
